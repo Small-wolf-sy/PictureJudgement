@@ -1,6 +1,6 @@
 % load('training.mat');
-row=500;
-col=300;
+row=200;
+col=150;
 %% 将测试的数据集转变为神经网络形式
 M=mean(TestData,3);
 
@@ -13,7 +13,7 @@ for i = 1 : m
     Gt =  Gt + temp'*temp;
 end
 Gt=Gt/m;
-d = 10;
+d = 20;
 [V,~] = eigs(Gt,d);%求特征值和特征向量
 %ＰＣＡ空间投影图像
 V = orth(V); %求V的标准正交基
@@ -26,7 +26,7 @@ parfor i = 1 : m
 end
 ConvertTestData=premnmx(ConvertTestData);
 %构造输出矩阵
-class=5;%一共五种评分
+class=10;%一共五种评分
 output=zeros(m,class);
 for i=1:1:m
     output(i,TestResult(i))=1;
