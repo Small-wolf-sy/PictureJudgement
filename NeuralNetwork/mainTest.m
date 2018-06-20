@@ -1,4 +1,4 @@
-% load('training.mat');
+% load('training1.mat');
 row=200;
 col=150;
 %% 将测试的数据集转变为神经网络形式
@@ -26,7 +26,7 @@ parfor i = 1 : m
 end
 ConvertTestData=premnmx(ConvertTestData);
 %构造输出矩阵
-class=10;%一共五种评分
+class=5;%一共五种评分
 output=zeros(m,class);
 for i=1:1:m
     output(i,TestResult(i))=1;
@@ -45,3 +45,5 @@ for i=1:1:m
     end
 end
 sprintf('识别率是 %3.3f%%',100 * hitNum / m )
+
+

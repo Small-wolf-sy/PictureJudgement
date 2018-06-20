@@ -1,4 +1,6 @@
 %% 读取结果并存储
+clear all;
+clc;
 grades=xlsread('grades.xlsx');
 grades=grades(:,2);%第一行为索引，第二行为结果
 %% 读取图片并存储
@@ -23,6 +25,8 @@ end
 
 m=400;
 
+% grades=grades.*2;
+
 %划分出训练集和测试集,并将评分规整为整数
 TrainingData=graImg(:,:,1:m);
 TrainingResult=round(grades(1:m));
@@ -31,7 +35,7 @@ TestData=graImg(:,:,m+1:500);
 TestResult=round(grades(m+1:500));
 
 
-% save 'datas2.mat';
+save 'datas4.mat';
 % % 读取数据
 % clear all;clc;
 % load('datas.mat');
@@ -47,7 +51,7 @@ for i = 1 : m
     Gt =  Gt + temp'*temp;
 end
 Gt=Gt/m;
-d = 25;
+d = 20;
 [V,~] = eigs(Gt,d);%求特征值和特征向量
 %ＰＣＡ空间投影图像
 V = orth(V); %求V的标准正交基
@@ -64,13 +68,13 @@ ConvertTrainingData=premnmx(ConvertTrainingData);
 %% 根据得到的数据，以及相应的结果，进行神经网络处理
 
 %构造输出矩阵
-class=10;%一共五种评分
+class=5;%一共五种评分
 output=zeros(m,class);
 for i=1:1:m
     output(i,TrainingResult(i))=1;
 end
 %创建神经网络
-net = newff( minmax(ConvertTrainingData) , [d 10] , { 'logsig' 'purelin' } , 'traingdx' ) ;
+net = newff( minmax(ConvertTrainingData) , [d 5] , { 'logsig' 'purelin' } , 'traingdx' ) ;
 
 %设置训练参数
 net.trainparam.show = 50 ;
@@ -88,5 +92,5 @@ net.trainParam.lr = 0.2 ;
 %      U  = number of elements in the network's output
 net = train( net, ConvertTrainingData  , output' ) ;
 
-save 'training.mat';
+save 'training2.mat';
 
